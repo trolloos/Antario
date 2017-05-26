@@ -46,18 +46,12 @@ cd Antario
 ```
 
 
-#### Generate a makefile
+#### Compile with build script
+ 
+You can build easily with the included build script.
 
 ```bash
-cmake .
-```
-
-#### Compile with make
-
-**Note:** _The `4` in the command below specifies the amount of cpu "threads" or "cores" you wish to compile with (more = faster)._
-
-```bash
-make -j 4
+./build
 ```
 
 ## Injecting
@@ -106,7 +100,7 @@ If you don't update once a day then we recommend at LEAST update once a week, an
 
 We provide a script included in the Antario folder that updates Antario for you. To use it, just run:
 
-```
+```bash
 ./update
 ```
 
@@ -117,7 +111,7 @@ And it will download and compile without any effort. Once it's done, happy hacki
 
 Configs are stored in a hidden directory in your home folder. Specifically 
 
-```
+```bash
 ~/.config/Antario
 ```
 
@@ -129,7 +123,7 @@ To see hidden folders inside your home folder, press <kbd>CTRL</kbd>+<kbd>H</kbd
 
 ## Grenade Configs
 
-```
+```bash
 ~/.config/AntarioGH
 ```
 
