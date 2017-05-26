@@ -56,15 +56,12 @@ void UI::SwapWindow()
 	if (Settings::Watermark::enabled)
 		Draw::ImDrawText(ImVec2(4.f, 4.f), Settings::Watermark::color.Color(), Settings::Watermark::text, NULL, 0.0f, NULL, ImFontFlags_Outline);
 
-	if (Settings::BombTimer::enabled) {
+	if (Settings::BombTimer::enabled)
+	{
 		if (Settings::Watermark::enabled)
-		{
 			ESP::DisplayBombInfo(2);
-		} 
 		else 
-		{
 			ESP::DisplayBombInfo(1);
-		}
 	}
 
 	if (engine->IsInGame())

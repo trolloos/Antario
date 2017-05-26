@@ -108,21 +108,14 @@ void AutoKnife::CreateMove(CUserCmd *cmd)
 		if (itemDefinitionIndex == ItemDefinitionIndex::WEAPON_TASER)
 		{
 			if (playerDistance <= 184.f)
-			{
 				cmd->buttons |= IN_ATTACK;
-			}
 		}
 		else
 		{
-			// If left click doesn't kill the player do right click
 			if (playerDistance <= 67.f && GetKnifeDamageDone(localplayer, player) < player->GetHealth())
-			{
 				cmd->buttons |= IN_ATTACK2;
-			}
 			else if (playerDistance <= 78.f)
-			{
 				cmd->buttons |= IN_ATTACK;
-			}
 		}
 	}
 }
