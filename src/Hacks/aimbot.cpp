@@ -387,15 +387,14 @@ void Aimbot::RCS(QAngle& angle, C_BasePlayer* player, CUserCmd* cmd)
 	if (!(cmd->buttons & IN_ATTACK))
 		return;
 
+	C_BasePlayer* localplayer = (C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer());
+	QAngle CurrentPunch = *localplayer->GetAimPunchAngle();
+	bool isSilent = Settings::Aimbot::silent;
 	bool hasTarget = Settings::Aimbot::AutoAim::enabled && player && shouldAim;
 
 	if (!Settings::Aimbot::RCS::always_on && !hasTarget)
 		return;
 
-	C_BasePlayer* localplayer = (C_BasePlayer*) entityList->GetClientEntity(engine->GetLocalPlayer());
-	QAngle CurrentPunch = *localplayer->GetAimPunchAngle();
-	static bool isSilent = Settings::Aimbot::silent;
-	
 	if (isSilent || hasTarget)
 	{
 		angle.x -= CurrentPunch.x * Settings::Aimbot::RCS::valueX;
