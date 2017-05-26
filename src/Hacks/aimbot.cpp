@@ -253,10 +253,8 @@ C_BasePlayer* GetClosestPlayer(CUserCmd* cmd, bool visible, Bone& bestBone, floa
 			if (PlayerCheck(temp, localplayer, true) && Entity::IsVisible(temp, targetBone))
 					player = temp;
 			else
-			{
-				if (PlayerCheck(player, localplayer, false))
-					continue;
-			}
+			if (PlayerCheck(player, localplayer, false))
+				continue;
 		}
 		else
 		if (PlayerCheck(player, localplayer, false))
@@ -281,6 +279,8 @@ C_BasePlayer* GetClosestPlayer(CUserCmd* cmd, bool visible, Bone& bestBone, floa
 			killTime = globalVars->curtime;
 			killTime += killTimeout; 
 		}
+		else
+			killTime = 0;
 		
 		//if (Settings::Aimbot::HitScan::enabled)
 		//	HitScan(player, targetBone);
@@ -372,7 +372,7 @@ C_BasePlayer* GetClosestPlayer(CUserCmd* cmd, bool visible, Bone& bestBone, floa
 
 	savedTarget = closestEntity;
 
-	if (killTime > globalVars->curtime && Settings::Aimbot::TargetLock::KillTimeout::enabled && Settings::Aimbot::TargetLock::enabled)
+	if (killTime > globalVars->curtime && Settings::Aimbot::TargetLock::KillTimeout::enabled)
 		return NULL;
 
 	return closestEntity;
