@@ -1,4 +1,0 @@
-#!/bin/sh
-
-cmake .
-make -j$(grep "^processor" /proc/cpuinfo | wc -l) "$@"
