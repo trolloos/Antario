@@ -231,8 +231,6 @@ void Visuals::RenderTab()
 				SetTooltip("Makes wall textures transparent");
 				ImGui::Checkbox("No Scope Border", &Settings::NoScopeBorder::enabled);
 				SetTooltip("Disables black scope silhouette");
-				ImGui::Checkbox("Menu Watermark", &Settings::Watermark::enabled);
-				SetTooltip("Enable/Disable main menu watermark");
 			}
 			ImGui::Columns(1);
 			ImGui::Separator();
