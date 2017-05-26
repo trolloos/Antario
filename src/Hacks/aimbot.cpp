@@ -79,12 +79,17 @@ std::unordered_map<ItemDefinitionIndex, AimbotWeapon_t, Util::IntHash<ItemDefini
 
 static const char* targets[] = { "pelvis", "", "", "spine_0", "spine_1", "spine_2", "spine_3", "neck_0", "head_0" };
 
-static void ApplyErrorToAngle(QAngle* angles, float margin)
+static QAngle ApplyErrorToAngle(QAngle* angles, float margin)
 {
 	QAngle error;
 	error.Random(-1.0f, 1.0f);
 	error *= margin;
 	angles->operator+=(error);
+	return error;
+}
+static inline void ApplyOffsetToAngle(QAngle *angles, QAngle *offset)
+{
+	angles->operator+=(*offset);
 }
 
 void GetBestBone(C_BasePlayer* player, float& bestDamage, Bone& bestBone)
@@ -689,6 +694,8 @@ void Aimbot::CreateMove(CUserCmd* cmd)
 	float oldSideMove = cmd->sidemove;
 
 	QAngle angle = cmd->viewangles;
+	static bool newTarget = true;
+	static QAngle lastRandom = {0,0,0};
 
 	shouldAim = Settings::Aimbot::AutoShoot::enabled;
 
@@ -741,10 +748,35 @@ void Aimbot::CreateMove(CUserCmd* cmd)
 				angle = Math::CalcAngle(pVecTarget, eVecTarget);
 
 				if (Settings::Aimbot::ErrorMargin::enabled)
-					ApplyErrorToAngle(&angle, Settings::Aimbot::ErrorMargin::value);
+				{
+					static int lastShotFired = 0;
+					if( (localplayer->GetShotsFired() > lastShotFired) || newTarget )//get new random spot when firing a shot or when aiming at a new target
+					{
+						lastRandom = ApplyErrorToAngle(&angle, Settings::Aimbot::ErrorMargin::value);
+					}
+
+					if( lastRandom.x != 0 && lastRandom.y != 0 && lastRandom.z != 0 )
+					{
+						ApplyOffsetToAngle(&angle,&lastRandom);
+					}
+
+					lastShotFired = localplayer->GetShotsFired();
+				}
+				newTarget = false;
+			}
+			else
+			{
+				newTarget = true;
+				lastRandom = {0,0,0};
 			}
 		}
 	}
+	else
+	{
+		newTarget = true;
+		lastRandom = {0,0,0};
+	}
+
 
 	Aimbot::AimStep(player, angle, cmd);
 	Aimbot::AutoCrouch(player, cmd);
