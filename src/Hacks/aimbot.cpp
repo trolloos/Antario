@@ -253,8 +253,8 @@ C_BasePlayer* GetClosestPlayer(CUserCmd* cmd, bool visible, Bone& bestBone, floa
 			if (PlayerCheck(temp, localplayer, true) && Entity::IsVisible(temp, targetBone))
 					player = temp;
 			else
-			if (PlayerCheck(player, localplayer, false))
-				continue;
+				if (PlayerCheck(player, localplayer, false))
+					continue;
 		}
 		else
 		if (PlayerCheck(player, localplayer, false))
@@ -277,7 +277,7 @@ C_BasePlayer* GetClosestPlayer(CUserCmd* cmd, bool visible, Bone& bestBone, floa
 		if (Settings::Aimbot::TargetLock::KillTimeout::enabled && player != temp)
 		{
 			killTime = globalVars->curtime;
-			killTime += killTimeout; 
+			killTime += killTimeout;
 		}
 		else
 			killTime = 0;
@@ -389,7 +389,7 @@ void Aimbot::RCS(QAngle& angle, C_BasePlayer* player, CUserCmd* cmd)
 
 	C_BasePlayer* localplayer = (C_BasePlayer*)entityList->GetClientEntity(engine->GetLocalPlayer());
 	QAngle CurrentPunch = *localplayer->GetAimPunchAngle();
-	bool isSilent = Settings::Aimbot::silent;
+	static bool isSilent = Settings::Aimbot::silent;
 	bool hasTarget = Settings::Aimbot::AutoAim::enabled && player && shouldAim;
 
 	if (!Settings::Aimbot::RCS::always_on && !hasTarget)

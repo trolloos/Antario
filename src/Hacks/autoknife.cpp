@@ -5,6 +5,40 @@ bool Settings::AutoKnife::Filters::enemies = true;
 bool Settings::AutoKnife::Filters::allies = false;
 bool Settings::AutoKnife::onKey = true;
 
+bool AutoKnife::IsPlayerBehind(C_BasePlayer* localplayer, C_BasePlayer* player)
+{
+	Vector toTarget = (localplayer->GetVecOrigin() - player->GetVecOrigin()).Normalize();
+	Vector playerViewAngles;
+	Math::AngleVectors(*player->GetEyeAngles(), playerViewAngles);
+	if (toTarget.Dot(playerViewAngles) > -0.5f)
+		return false;
+	else
+		return true;
+}
+
+int AutoKnife::GetKnifeDamageDone(C_BasePlayer* localplayer, C_BasePlayer* player)
+{
+	//damage: unarmored/armored
+	//leftclick: 40/34
+	//backstab leftclick: 90/76
+	bool backstab = IsPlayerBehind(localplayer, player);
+	int armor = player->GetArmor();
+	if (!backstab)
+	{
+		if (armor>0)
+			return 34;
+		else
+			return 40;
+	}
+	else
+	{
+		if (armor>0)
+			return 76;
+		else
+			return 90;
+	}
+}
+
 void AutoKnife::CreateMove(CUserCmd *cmd)
 {
 	if (!engine->IsInGame())
@@ -36,9 +70,9 @@ void AutoKnife::CreateMove(CUserCmd *cmd)
 
 	QAngle viewAngles;
 	engine->GetViewAngles(viewAngles);
-	QAngle viewAngles_rcs = viewAngles + *localplayer->GetAimPunchAngle() * 2.0f;
+	QAngle viewAnglesRcs = viewAngles + *localplayer->GetAimPunchAngle() * 2.0f;
 
-	Math::AngleVectors(viewAngles_rcs, traceEnd);
+	Math::AngleVectors(viewAnglesRcs, traceEnd);
 
 	traceStart = localplayer->GetEyePosition();
 	traceEnd = traceStart + (traceEnd * 8192.0f);
@@ -68,23 +102,24 @@ void AutoKnife::CreateMove(CUserCmd *cmd)
 	if (player->GetTeam() == localplayer->GetTeam() && !Settings::AutoKnife::Filters::allies)
 		return;
 
-	float Distance = localplayer->GetVecOrigin().DistTo(player->GetVecOrigin());
+	float playerDistance = localplayer->GetVecOrigin().DistTo(player->GetVecOrigin());
 	if (activeWeapon->GetNextPrimaryAttack() < globalVars->curtime)
 	{
 		if (itemDefinitionIndex == ItemDefinitionIndex::WEAPON_TASER)
 		{
-			if (Distance <= 184.f)
+			if (playerDistance <= 184.f)
 			{
 				cmd->buttons |= IN_ATTACK;
 			}
 		}
 		else
 		{
-			if (Distance <= 67.f && player->GetHealth() > 35)
+			// If left click doesn't kill the player do right click
+			if (playerDistance <= 67.f && GetKnifeDamageDone(localplayer, player) < player->GetHealth())
 			{
 				cmd->buttons |= IN_ATTACK2;
 			}
-			else if (Distance <= 78.f)
+			else if (playerDistance <= 78.f)
 			{
 				cmd->buttons |= IN_ATTACK;
 			}
