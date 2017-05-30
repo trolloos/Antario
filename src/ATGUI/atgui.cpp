@@ -6,6 +6,8 @@ bool Settings::Watermark::enableInGame = true;
 char* Settings::Watermark::text = strdup("Antario");
 ColorVar Settings::Watermark::color = ImColor(255, 255, 255, 255);
 bool Settings::BombTimer::enabled = true;
+int Settings::BombTimer::x = 1;
+int Settings::BombTimer::y = 4;
 
 bool Settings::ScreenshotCleaner::enabled = false;
 
@@ -54,28 +56,18 @@ void UI::SwapWindow()
 	if (UI::isVisible)
 		return;
 
-	if (Settings::Watermark::enabled)
-	{
-		if (engine->IsInGame())
-		{
-			return;
-		}
-		else
-		{
-			Draw::ImDrawText(ImVec2(4.f, 4.f), Settings::Watermark::color.Color(), Settings::Watermark::text, NULL, 0.0f, NULL, ImFontFlags_Outline);
-		}
-	}
-
 	if (Settings::BombTimer::enabled)
 	{
-		if (Settings::Watermark::enabled && Settings::Watermark::enableInGame)
-			ESP::DisplayBombInfo(2);
-		else 
-			ESP::DisplayBombInfo(1);
+		ESP::DisplayBombInfo(Settings::BombTimer::x, Settings::BombTimer::y);
 	}
 
-	if (engine->IsInGame())
+	if (Settings::Watermark::enabled)
+	{
+		if (engine->IsInGame() && !Settings::Watermark::enableInGame)
 			return;
+		else
+			Draw::ImDrawText(ImVec2(4.f, 4.f), Settings::Watermark::color.Color(), Settings::Watermark::text, NULL, 0.0f, NULL, ImFontFlags_Outline);
+	}
 }
 
 

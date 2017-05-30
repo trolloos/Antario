@@ -690,7 +690,7 @@ void ESP::DrawPlantedBomb(C_PlantedC4* bomb)
 	DrawEntity(bomb, displayText.str().c_str(), Color::FromImColor(color));
 }
 
-void ESP::DisplayBombInfo(int Row)
+void ESP::DisplayBombInfo(int x, int y)
 {
 	if (!(*csGameRules) || !(*csGameRules)->IsBombPlanted())
 			return;
@@ -718,8 +718,9 @@ void ESP::DisplayBombInfo(int Row)
 
 			std::stringstream displayText;
 			displayText << "Bomb: " << std::fixed << std::showpoint << std::setprecision(1) << bombTimer << ", Damage: " << (int) damage;
-			float ycord = Row * 12.f;
-			Draw::ImDrawText(ImVec2(4.f, ycord), Settings::Watermark::color.Color(), displayText.str().c_str(), NULL, 0.0f, NULL, ImFontFlags_Outline);
+			float xcord = x * 4.f;
+			float ycord = y * 4.f;
+			Draw::ImDrawText(ImVec2(xcord, ycord), Settings::Watermark::color.Color(), displayText.str().c_str(), NULL, 0.0f, NULL, ImFontFlags_Outline);
 		}
 	}
 }

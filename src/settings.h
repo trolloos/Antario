@@ -876,6 +876,8 @@ namespace Settings
 	namespace BombTimer
 	{
 		extern bool enabled;
+		extern int x;
+		extern int y;
 	}
 
 	namespace ShowRanks
