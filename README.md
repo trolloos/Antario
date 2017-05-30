@@ -1,4 +1,5 @@
-##DISCONTINUED:
+## DISCONTINUED
+
 If you want to use this one, feel free to do so, but I am not updating it anymore.
 If you have any idea to add something, just make a pull request with a proper code and I'll add it, but better would be to just use other forks.
 
