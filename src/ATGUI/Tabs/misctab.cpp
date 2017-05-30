@@ -4,6 +4,11 @@ static char nickname[127] = "";
 
 void Misc::RenderTab()
 {
+	int width, height;
+	engine->GetScreenSize(width, height);
+	width = width/4;
+	height = height/4;
+
 	const char* strafeTypes[] = { "Forwards", "Backwards", "Left", "Right", "Rage" };
 	const char* animationTypes[] = { "Static", "Marquee", "Words", "Letters" };
 	const char* spammerTypes[] = { "None", "Normal", "Positions" };
@@ -323,14 +328,31 @@ void Misc::RenderTab()
 				SetTooltip("Enable/Disable the watermark");
 				ImGui::Checkbox("Show always", &Settings::Watermark::enableInGame);
 				SetTooltip("Shows the watermark ingame");
-				
 			}
 			ImGui::NextColumn();
 			{
 				ImGui::PushItemWidth(-1);
 				ImGui::InputText("##WATERMARK", Settings::Watermark::text, 63);
 				ImGui::PopItemWidth();
+				if (ImGui::Button("Watermark Position", ImVec2(-1, 0)))
+					ImGui::OpenPopup("positionWatermark");
+				SetTooltip("Change the coordiantes of the Watermark");
+				ImGui::SetNextWindowSize(ImVec2(200, 70), ImGuiSetCond_Always);
+
+				if (ImGui::BeginPopup("positionWatermark"))
+				{
+					ImGui::PushItemWidth(-1);
+					ImGui::SliderInt("##WATERMARKX", &Settings::Watermark::x, 1, width, "X: %0.f");
+					SetTooltip("Tip: Use Crtl+Click for precise input");
+					ImGui::PopItemWidth();
+					ImGui::PushItemWidth(-1);
+					ImGui::SliderInt("##WATERMARKY", &Settings::Watermark::y, 1, height, "Y: %0.f");
+					ImGui::PopItemWidth();
+					ImGui::EndPopup();
+				}
+				ImGui::PopItemWidth();
 			}
+			ImGui::Separator();
 			ImGui::Columns(2, NULL, true);
 			{
 				ImGui::Checkbox("Bomb Timer", &Settings::BombTimer::enabled);
@@ -338,13 +360,22 @@ void Misc::RenderTab()
 			}
 			ImGui::NextColumn();
 			{
-				ImGui::PushItemWidth(-1);
-				ImGui::SliderInt("##BOMBINFOX", &Settings::BombTimer::x, 1, 591, "X: %0.f");
+				if (ImGui::Button("Bomb Timer Position", ImVec2(-1, 0)))
+					ImGui::OpenPopup("positionBombTimer");
 				SetTooltip("Change the coordiantes of the Bomb Timer");
-				ImGui::PopItemWidth();
-				ImGui::PushItemWidth(-1);
-				ImGui::SliderInt("##BOMBINFOY", &Settings::BombTimer::y, 1, 355, "Y: %0.f");
-				SetTooltip("Tip: Use Crtl+Click for precise input");
+				ImGui::SetNextWindowSize(ImVec2(200, 70), ImGuiSetCond_Always);
+
+				if (ImGui::BeginPopup("positionBombTimer"))
+				{
+					ImGui::PushItemWidth(-1);
+					ImGui::SliderInt("##BOMBTIMERX", &Settings::BombTimer::x, 1, width, "X: %0.f");
+					SetTooltip("Tip: Use Crtl+Click for precise input");
+					ImGui::PopItemWidth();
+					ImGui::PushItemWidth(-1);
+					ImGui::SliderInt("##BOMBTIMERY", &Settings::BombTimer::y, 1, height, "Y: %0.f");
+					ImGui::PopItemWidth();
+					ImGui::EndPopup();
+				}
 				ImGui::PopItemWidth();
 			}
 			ImGui::EndChild();

@@ -869,6 +869,8 @@ namespace Settings
 	{
 		extern bool enabled;
 		extern bool enableInGame;
+		extern int x;
+		extern int y;
 		extern char* text;
 		extern ColorVar color;
 	}
