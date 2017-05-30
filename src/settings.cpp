@@ -410,6 +410,7 @@ void Settings::LoadDefaultsOrSave(std::string path)
  	settings["WalkBot"]["autobuyAt"] = Settings::WalkBot::autobuyAt;
 
  	settings["Watermark"]["enabled"] = Settings::Watermark::enabled;
+ 	settings["Watermark"]["enableInGame"] = Settings::Watermark::enableInGame;
 	settings["Watermark"]["text"] = Settings::Watermark::text;
 	LoadColor(settings["Watermark"]["color"], Settings::Watermark::color);
 
@@ -910,6 +911,7 @@ void Settings::LoadConfig(std::string path)
 	GetVal(settings["WalkBot"]["autobuyAt"], &Settings::WalkBot::autobuyAt);
 
 	GetVal(settings["Watermark"]["enabled"], &Settings::Watermark::enabled);
+	GetVal(settings["Watermark"]["enableInGame"], &Settings::Watermark::enableInGame);
 	GetVal(settings["Watermark"]["text"], &Settings::Watermark::text);
 	GetVal(settings["Watermark"]["color"], &Settings::Watermark::color);
 

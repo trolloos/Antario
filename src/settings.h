@@ -868,6 +868,7 @@ namespace Settings
 	namespace Watermark
 	{
 		extern bool enabled;
+		extern bool enableInGame;
 		extern char* text;
 		extern ColorVar color;
 	}

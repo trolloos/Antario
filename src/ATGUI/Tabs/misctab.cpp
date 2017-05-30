@@ -418,7 +418,9 @@ void Misc::RenderTab()
 				ImGui::Checkbox("Auto Defuse", &Settings::AutoDefuse::enabled);
 				SetTooltip("Will automatically defuse the bomb with the given time remaining");
 				ImGui::Checkbox("Watermark", &Settings::Watermark::enabled);
-				SetTooltip("Enable/Disable the Watermark");
+				SetTooltip("Enable/Disable the watermark");
+				ImGui::Checkbox("Show always", &Settings::Watermark::enableInGame);
+				SetTooltip("Shows the watermark ingame");
 				ImGui::Checkbox("Bomb Timer", &Settings::BombTimer::enabled);
 				SetTooltip("Show the remaining time till explosion in the top left corner");
 				ImGui::Checkbox("Silent Defuse", &Settings::AutoDefuse::silent);
