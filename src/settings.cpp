@@ -411,10 +411,14 @@ void Settings::LoadDefaultsOrSave(std::string path)
 
  	settings["Watermark"]["enabled"] = Settings::Watermark::enabled;
  	settings["Watermark"]["enableInGame"] = Settings::Watermark::enableInGame;
+ 	settings["Watermark"]["x"] = Settings::Watermark::x;
+	settings["Watermark"]["y"] = Settings::Watermark::y;
 	settings["Watermark"]["text"] = Settings::Watermark::text;
 	LoadColor(settings["Watermark"]["color"], Settings::Watermark::color);
 
 	settings["BombTimer"]["enabled"] = Settings::BombTimer::enabled;
+	settings["BombTimer"]["x"] = Settings::BombTimer::x;
+	settings["BombTimer"]["y"] = Settings::BombTimer::y;
 
 	for (const auto& item: Settings::Skinchanger::skinsCT)
 	{
@@ -912,10 +916,14 @@ void Settings::LoadConfig(std::string path)
 
 	GetVal(settings["Watermark"]["enabled"], &Settings::Watermark::enabled);
 	GetVal(settings["Watermark"]["enableInGame"], &Settings::Watermark::enableInGame);
+	GetVal(settings["Watermark"]["x"], &Settings::Watermark::x);
+	GetVal(settings["Watermark"]["y"], &Settings::Watermark::y);
 	GetVal(settings["Watermark"]["text"], &Settings::Watermark::text);
 	GetVal(settings["Watermark"]["color"], &Settings::Watermark::color);
 
 	GetVal(settings["BombTimer"]["enabled"], &Settings::BombTimer::enabled);
+	GetVal(settings["BombTimer"]["x"], &Settings::BombTimer::x);
+	GetVal(settings["BombTimer"]["y"], &Settings::BombTimer::y);
 
 	GetVal(settings["ShowRanks"]["enabled"], &Settings::ShowRanks::enabled);
 

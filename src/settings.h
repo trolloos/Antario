@@ -869,6 +869,8 @@ namespace Settings
 	{
 		extern bool enabled;
 		extern bool enableInGame;
+		extern int x;
+		extern int y;
 		extern char* text;
 		extern ColorVar color;
 	}
@@ -876,6 +878,8 @@ namespace Settings
 	namespace BombTimer
 	{
 		extern bool enabled;
+		extern int x;
+		extern int y;
 	}
 
 	namespace ShowRanks

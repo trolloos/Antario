@@ -4,6 +4,11 @@ static char nickname[127] = "";
 
 void Misc::RenderTab()
 {
+	int width, height;
+	engine->GetScreenSize(width, height);
+	width = width/4;
+	height = height/4;
+
 	const char* strafeTypes[] = { "Forwards", "Backwards", "Left", "Right", "Rage" };
 	const char* animationTypes[] = { "Static", "Marquee", "Words", "Letters" };
 	const char* spammerTypes[] = { "None", "Normal", "Positions" };
@@ -315,6 +320,64 @@ void Misc::RenderTab()
 			}
 			ImGui::Columns(1);
 			ImGui::Separator();
+			ImGui::Text("On-screen display");
+			ImGui::Separator();
+			ImGui::Columns(2, NULL, true);
+			{
+				ImGui::Checkbox("Watermark", &Settings::Watermark::enabled);
+				SetTooltip("Enable/Disable the watermark");
+				ImGui::Checkbox("Show always", &Settings::Watermark::enableInGame);
+				SetTooltip("Shows the watermark ingame");
+			}
+			ImGui::NextColumn();
+			{
+				ImGui::PushItemWidth(-1);
+				ImGui::InputText("##WATERMARK", Settings::Watermark::text, 63);
+				ImGui::PopItemWidth();
+				if (ImGui::Button("Watermark Position", ImVec2(-1, 0)))
+					ImGui::OpenPopup("positionWatermark");
+				SetTooltip("Change the coordiantes of the Watermark");
+				ImGui::SetNextWindowSize(ImVec2(200, 70), ImGuiSetCond_Always);
+
+				if (ImGui::BeginPopup("positionWatermark"))
+				{
+					ImGui::PushItemWidth(-1);
+					ImGui::SliderInt("##WATERMARKX", &Settings::Watermark::x, 1, width, "X: %0.f");
+					SetTooltip("Tip: Use Crtl+Click for precise input");
+					ImGui::PopItemWidth();
+					ImGui::PushItemWidth(-1);
+					ImGui::SliderInt("##WATERMARKY", &Settings::Watermark::y, 1, height, "Y: %0.f");
+					ImGui::PopItemWidth();
+					ImGui::EndPopup();
+				}
+				ImGui::PopItemWidth();
+			}
+			ImGui::Separator();
+			ImGui::Columns(2, NULL, true);
+			{
+				ImGui::Checkbox("Bomb Timer", &Settings::BombTimer::enabled);
+				SetTooltip("Show the remaining time till explosion in the top left corner");
+			}
+			ImGui::NextColumn();
+			{
+				if (ImGui::Button("Bomb Timer Position", ImVec2(-1, 0)))
+					ImGui::OpenPopup("positionBombTimer");
+				SetTooltip("Change the coordiantes of the Bomb Timer");
+				ImGui::SetNextWindowSize(ImVec2(200, 70), ImGuiSetCond_Always);
+
+				if (ImGui::BeginPopup("positionBombTimer"))
+				{
+					ImGui::PushItemWidth(-1);
+					ImGui::SliderInt("##BOMBTIMERX", &Settings::BombTimer::x, 1, width, "X: %0.f");
+					SetTooltip("Tip: Use Crtl+Click for precise input");
+					ImGui::PopItemWidth();
+					ImGui::PushItemWidth(-1);
+					ImGui::SliderInt("##BOMBTIMERY", &Settings::BombTimer::y, 1, height, "Y: %0.f");
+					ImGui::PopItemWidth();
+					ImGui::EndPopup();
+				}
+				ImGui::PopItemWidth();
+			}
 			ImGui::EndChild();
 		}
 	}
@@ -417,12 +480,6 @@ void Misc::RenderTab()
 				SetTooltip("Hold to prime grenade, release to perform perfect jump throw. Good for executing map smokes.");
 				ImGui::Checkbox("Auto Defuse", &Settings::AutoDefuse::enabled);
 				SetTooltip("Will automatically defuse the bomb with the given time remaining");
-				ImGui::Checkbox("Watermark", &Settings::Watermark::enabled);
-				SetTooltip("Enable/Disable the watermark");
-				ImGui::Checkbox("Show always", &Settings::Watermark::enableInGame);
-				SetTooltip("Shows the watermark ingame");
-				ImGui::Checkbox("Bomb Timer", &Settings::BombTimer::enabled);
-				SetTooltip("Show the remaining time till explosion in the top left corner");
 				ImGui::Checkbox("Silent Defuse", &Settings::AutoDefuse::silent);
 				SetTooltip("Will defuse the bomb with no need to look at it");
 				ImGui::Checkbox("Sniper Crosshair", &Settings::SniperCrosshair::enabled);
@@ -442,18 +499,9 @@ void Misc::RenderTab()
 				UI::KeyBindButton(&Settings::Airstuck::key);
 				UI::KeyBindButton(&Settings::Autoblock::key);
 				UI::KeyBindButton(&Settings::JumpThrow::key);
+				ImGui::PushItemWidth(-1);
 				ImGui::SliderFloat("##DEFTIME", &Settings::AutoDefuse::time, 0.05, 5, "Time: %0.3f");
-				if (ImGui::Button("Custom###WMCUSTOM"))
-					ImGui::OpenPopup("customwm");
-
-				ImGui::SetNextWindowSize(ImVec2(565, 40), ImGuiSetCond_Always);
-				if (ImGui::BeginPopup("customwm"))
-				{
-					ImGui::PushItemWidth(550);
-						ImGui::InputText("", Settings::Watermark::text, 127);
-					ImGui::PopItemWidth();
-					ImGui::EndPopup();
-				}
+				ImGui::PopItemWidth();
 			}
 			ImGui::Columns(1);
 			ImGui::Separator();
