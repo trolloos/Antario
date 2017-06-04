@@ -1,4 +1,3 @@
-git clone --recursive https://github.com/Wando1423/Antario
 #include "spammer.h"
 
 SpammerType Settings::Spammer::type = SpammerType::SPAMMER_NONE;
