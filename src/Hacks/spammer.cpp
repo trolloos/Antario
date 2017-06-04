@@ -1,3 +1,4 @@
+git clone --recursive https://github.com/Wando1423/Antario
 #include "spammer.h"
 
 SpammerType Settings::Spammer::type = SpammerType::SPAMMER_NONE;
@@ -37,7 +38,7 @@ void Spammer::BeginFrame(float frameTime)
 	long currentTime_ms = Util::GetEpochTime();
 	static long timeStamp = currentTime_ms;
 
-	if (currentTime_ms - timeStamp < 850)
+	if (currentTime_ms - timeStamp < 2880)
 		return;
 
 	// Kill spammer
